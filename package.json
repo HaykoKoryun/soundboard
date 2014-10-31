@@ -1,0 +1,33 @@
+{
+  "name": "soundboard",
+  "version": "1.0.0",
+  "description": "soundboard",
+  "main": "/app/index.html",
+  "js-flags": "--expose-gc",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HaykoKoryun/soundboard.git"
+  },
+  "author": "haykokoryun@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HaykoKoryun/soundboard/issues"
+  },
+  "homepage": "https://github.com/HaykoKoryun/soundboard",
+  "dependencies": {
+    "dive": "^0.3.1",
+    "express": "^4.10.0",
+    "nwglobal": "0.0.2",
+    "socket.io": "^1.1.0"
+  },
+  "window": {
+    "title": "Halloween Soundboard",
+    "icon": "common/icon-32.png",
+    "toolbar": false,
+    "frame": true,
+    "width": 500,
+    "height": 150,
+    "position": "center",
+    "resizable": false
+  }
+}
