@@ -23,6 +23,7 @@ html,body
 	width: 125px;
 	position: fixed;
 	top: 83px;
+	left: 14px;
 }
 
 #menu .label
@@ -41,7 +42,9 @@ html,body
 	border-radius: 5px;
 	border: solid #96ff00 2px;
 	margin: 5px;
+	margin-left: 7px;
 	padding: 5px;
+	position: relative;
 }
 
 #samples
@@ -69,6 +72,7 @@ html,body
 	color: #96ff00;
 	position: absolute;
 	top: -25px;
+	left: 28px;
 }
 
 .collapse-expand
@@ -221,5 +225,43 @@ html,body
 {
     top: 6px !important;
 	
-    left: 35px;
+    left: 58px !important;
+}
+
+.indicator
+{
+	width: 15px;
+	height: 15px;
+	background-color: #96ff00;
+	position: absolute;
+	left: 7px;
+	top: -24px;
+	opacity: 0;
+	border-radius: 50%;
+}
+
+#menu a .indicator
+{
+    left: -22px;
+	
+    top: 0px;
+    bottom: 0px;
+    margin:  auto;
+}
+
+.folder.collapsed .indicator
+{
+	left: 34px;
+	top: 7px;
+}
+
+.folder.playing .indicator, #menu a.playing .indicator
+{
+	-webkit-animation: indicate 2s infinite;
+}
+
+@-webkit-keyframes indicate
+{
+	50% {opacity: 1;},
+	100% {opacity: 0;} 
 }

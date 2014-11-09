@@ -18,7 +18,8 @@
     "dive": "^0.3.1",
     "express": "^4.10.0",
     "nwglobal": "0.0.2",
-    "socket.io": "^1.1.0"
+    "socket.io": "^1.1.0",
+    "MD5": "~1.2.1"
   },
   "window": {
     "title": "Halloween Soundboard",

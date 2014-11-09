@@ -8,6 +8,8 @@ var _win = _gui.Window.get();
 var _dive = require("dive");
 var _path = require("path");
 
+var _md5 = require('MD5');
+
 _app.use('/', _express.static('remote/'));
 _app.use('/common/', _express.static('common/'));
 
@@ -84,8 +86,6 @@ function discoverLibrary()
 		_step.text('');
 		
 		var libpath = _path.join(process.cwd(), "/audio/loops/");
-		
-		console.log(libpath);
 	
 		_dive
 		(
@@ -123,9 +123,9 @@ function discoverLibrary()
 		var reg = new RegExp("\\" + _path.sep, "g");
 		var filepath = file.substring(libpath.length);
 		
-		var id = filepath.substring(0, filepath.length - _path.extname(filepath).length).replace(reg, "/");
-		lib.push(id);
-		
+		var name = filepath.substring(0, filepath.length - _path.extname(filepath).length).replace(reg, "/");
+		var id = "file_" + _md5(name);
+		lib.push({id:id, name:name});		
 		_step.text('processed: ' + id);
 
 		audio[id] = new buzz.sound( libpath + filepath.substring(0, filepath.length - _path.extname(filepath).length), { formats: [ "ogg" ] } );
@@ -137,7 +137,10 @@ function discoverLibrary()
 		{
 			if(_admin != null)
 			{
-				_admin.emit("playing", {percent:this.getPercent(), id:this.id});
+				if(!this.isPaused())
+				{
+					_admin.emit("playing", {percent:this.getPercent(), id:this.id});
+				}
 			}
 		});
 		

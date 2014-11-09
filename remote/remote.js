@@ -19,6 +19,7 @@ $(document).ready(function()
 });
 
 var folders = {};
+var ids2f = {};
 
 function ready()
 {
@@ -27,27 +28,30 @@ function ready()
 		var list = data.loops;
 		for(var i = 0; i < list.length; ++i)
 		{
-			var id = list[i];
-			var label = id;
+			var id = list[i].id;
+			var label = list[i].name;
+			
 			var folder = "#loops-misc";
 			
-			if(id.indexOf("/") != -1)
+			if(label.indexOf("/") != -1)
 			{
-				folder = id.substring(0, id.indexOf("/"));
+				folder = label.substring(0, label.indexOf("/"));
 				if(!folders.hasOwnProperty(folder))
 				{
 					folders[folder] = {};
+					
 					$("#loops").append
 					(
 						"<div class='folder' id='" + folder + "'>\
-							<div class='title' id='" + folder + "-title'>" + folder + "</div>\
+							<div class='title' id='" + folder + "-title'>" + folder.replace(/\-/ig, ' ') + "</div>\
 							<div class='collapse-expand collapse'></div>\
+							<div class='indicator'></div>\
 						</div>"
 					);
 				}
 				
 				folder = "#" + folder;
-				label = id.substring(id.indexOf("/") + 1);
+				label = label.substring(label.indexOf("/") + 1);
 			}
 			
 			$(folder).append
@@ -64,6 +68,8 @@ function ready()
 					<div class="id">'  + label + '</div>\
 				</div>'
 			);
+			
+			ids2f[id] = folder;
 		}		
 		
 		$("#loops .folder").append('<div class="clear"></div>');
@@ -73,9 +79,12 @@ function ready()
 		list = data.effects;
 		for(var i = 0; i < list.length; ++i)
 		{
+			var id = list[i].id;
+			var label = list[i].name;
+			
 			$(folder).append
 			(
-				'<div class="effect" id="' + list[i] + '">\
+				'<div class="effect" id="' + id + '">\
 					<div class="duration">\
 						<input value="0"/>\
 					</div>\
@@ -84,9 +93,11 @@ function ready()
 					</div>\
 					<div class="play-pause play"></div>\
 					<div class="stop"></div>\
-					<div class="id">'  + list[i] + '</div>\
+					<div class="id">'  + label + '</div>\
 				</div>'
 			);
+			
+			ids2f[id] = folder;
 		}
 		
 		$("#effects-misc").append('<div class="clear"></div>');
@@ -117,15 +128,15 @@ function ready()
 	{
 		var menu = $("#menu");
 		menu.append("<div class='label'>loops</div>");
-		menu.append("<a href='#loops-misc-title'>misc</a>");
+		menu.append("<a class='' id='menu_loops-misc' href='#loops-misc-title'>misc<div class='indicator'></div></a>");
 		
 		for(key in folders)
 		{
-			menu.append("<a href='#" + key + "-title'>" + key + "</a>");
+			menu.append("<a class='' id='menu_" + key + "' href='#" + key + "-title'>" + key.replace(/\-/ig, ' ') + "<div class='indicator'></div></a>");
 		}
 		
 		menu.append("<div class='label'>effects</div>");
-		menu.append("<a href='#effects-misc-title'>misc</a>");
+		menu.append("<a class='' id='menu_effects-misc' href='#effects-misc-title'>misc<div class='indicator'></div></a>");
 	}
 	
 	function buildKnobs()
@@ -251,6 +262,26 @@ function ready()
 		socket.on("playing", function(data)
 		{
 			$('#' + data.id + ' .duration input').val(data.percent, false).trigger('update');
+			if($('#' + data.id + ' .play-pause').hasClass("play"))
+			{
+				//$('#' + data.id + ' .play-pause').removeClass("play").addClass("pause");
+			}
+			if(data.percent != 0)
+			{
+				var folder = $(ids2f[data.id]);
+				if(!folder.hasClass("playing"))
+				{
+					folder.addClass("playing");
+					console.log(data.id);
+					$(ids2f[data.id].replace(/#/, "#menu_")).addClass("playing");
+				}
+			}
+			else
+			{
+				var folder = $(ids2f[data.id]);
+				folder.removeClass("playing");
+				$(ids2f[data.id].replace(/#/, "#menu_")).removeClass("playing");
+			}
 		});
 		
 		socket.on("stop", function(data)
@@ -258,6 +289,9 @@ function ready()
 			console.log('stop');
 			$('#' + data.id + ' .duration input').val(0, false).trigger('update');
 			$('#' + data.id + ' .play-pause').removeClass("pause").addClass("play");
+			var folder = $(ids2f[data.id]);
+			folder.removeClass("playing");
+			$(ids2f[data.id].replace(/#/, "#menu_")).removeClass("playing");
 		});
 	}
 }
