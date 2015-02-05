@@ -22,12 +22,12 @@
     "MD5": "~1.2.1"
   },
   "window": {
-    "title": "Halloween Soundboard",
+    "title": "Soundboard",
     "icon": "common/icon-32.png",
     "toolbar": false,
     "frame": true,
     "width": 500,
-    "height": 150,
+    "height": 170,
     "position": "center",
     "resizable": false
   }
