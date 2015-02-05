@@ -1,0 +1,40 @@
+html
+{
+  margin: 0px;
+  padding: 0px;
+}
+
+body
+{
+  background-image: url(../images/bg.jpg);
+  background-position: 50% 50%;
+  background-repeat: repeat;
+  color: #fff;
+  font-family: 'Oxygen', sans-serif;
+}
+
+#logo
+{
+  width: 466px;
+  height: 103px;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-image: url(../images/logo-white.png);
+}
+
+#container
+{
+  width: 600px;
+  margin: auto;
+}
+
+h1
+{
+  text-align: center;
+}
+
+footer
+{
+  font-size: 12px;
+}
